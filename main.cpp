@@ -1,52 +1,53 @@
-    #include <iostream>
-    #include <string>
-    #include <vector>
-    #include "bitmap.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include "bitmap.h"
 
-  using namespace std;
+using namespace std;
 
-  int main ()
+int main ()
 {
- Bitmap image;
- vector <vector <Pixel> > bmp;
- Pixel rgb;
- string file;
- bool validBmp;
- do{
-    cout<<"enter filename:"<<endl;
-    cin>>file; 
-    image.open(file);
-    validBmp=image.isImage();
-    }
+        Bitmap image;
+        vector <vector <Pixel> > bmp;
+        Pixel rgb;
+        string file;
+        bool validBmp;
+        do{
+                cout << "enter filename: " << endl;
+                cin >> file; 
+                image.open(file);
+                validBmp = image.isImage();
+        }
 
-while(validBmp!=true);
+        while (validBmp!=true);
 
- if (validBmp == true )
- { 
-  bmp = image.toPixelMatrix();
-  for (int i=0; i < bmp.size() ; i++)
-  { 
-    for (int j=0; j < bmp[0].size(); j++) 
-    {
-  // take all the redness out of the top-left pixel
-        rgb = bmp [i][j];
-        int grey = rgb.red + rgb.blue + rgb.green;
-        grey = grey/3;
-        rgb.red = grey;
-        rgb.blue = grey;
-        rgb.green = grey;
-  // put changed image back into matrix, update the bitmap and save it
-        bmp [i][j] = rgb;
-    }
-  }
- 
-  image.fromPixelMatrix(bmp);
-  image.save("picture.bmp");
+        if (validBmp == true )
+        {
+                // matrix that changes pixels
+                bmp = image.toPixelMatrix();
+                for (int i=0; i < bmp.size() ; i++)
+                { 
+                        for (int j=0; j < bmp[0].size(); j++) 
+                        {
+                                // takes out color, turning it greyscale
+                                rgb = bmp [i][j];
+                                int grey = rgb.red + rgb.blue + rgb.green;
+                                grey = grey/3;
+                                rgb.red = grey;
+                                rgb.blue = grey;
+                                rgb.green = grey;
+                                // put changed image back into matrix
+                                bmp [i][j] = rgb;
+                        }
+                }
+                // saves picture as new file, as picture.bmp
+                image.fromPixelMatrix(bmp);
+                image.save("picture.bmp");
 
- }
+        }
 
 
 
-   return 0;
+        return 0;
 }
 
